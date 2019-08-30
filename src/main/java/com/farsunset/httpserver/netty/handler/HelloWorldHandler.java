@@ -26,7 +26,7 @@ import com.farsunset.httpserver.dto.Response;
 import com.farsunset.httpserver.netty.annotation.NettyHttpHandler;
 import com.farsunset.httpserver.netty.http.NettyHttpRequest;
 
-@NettyHttpHandler(path = "/hello/world")
+@NettyHttpHandler(path = "/hello")
 public class HelloWorldHandler implements IFunctionHandler<String> {
 
     @Override

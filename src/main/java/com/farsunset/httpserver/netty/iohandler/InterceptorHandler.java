@@ -55,6 +55,7 @@ public class InterceptorHandler extends ChannelInboundHandlerAdapter {
      * @return
      */
     private boolean isPassed(FullHttpRequest request){
+        // TODO
         return true;
     }
 }

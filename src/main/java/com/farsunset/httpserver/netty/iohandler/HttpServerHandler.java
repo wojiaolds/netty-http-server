@@ -21,7 +21,6 @@
  */
 package com.farsunset.httpserver.netty.iohandler;
 
-
 import com.farsunset.httpserver.dto.Response;
 import com.farsunset.httpserver.netty.annotation.NettyHttpHandler;
 import com.farsunset.httpserver.netty.exception.IllegalMethodNotAllowedException;
@@ -54,6 +53,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
+/**
+ * ApplicationContextAwareProcessor的postProcessBeforeInitialization会判断bean是不是ApplicationContextAware
+ */
 @ChannelHandler.Sharable
 @Component
 public class HttpServerHandler extends SimpleChannelInboundHandler<FullHttpRequest> implements ApplicationContextAware {
@@ -67,7 +69,7 @@ public class HttpServerHandler extends SimpleChannelInboundHandler<FullHttpReque
         thread.setName("NettyHttpHandler-" + thread.getName());
         return thread;
     });
-
+    
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) {
         ctx.flush();

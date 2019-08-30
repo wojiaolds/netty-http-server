@@ -45,7 +45,7 @@
         </dependency>
     </dependencies>
     <build>
-        <finalName>netty-http-server</finalName>
+        <finalName>demo</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

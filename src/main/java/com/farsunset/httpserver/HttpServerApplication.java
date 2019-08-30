@@ -22,18 +22,42 @@
 package com.farsunset.httpserver;
 
 import com.farsunset.httpserver.netty.annotation.NettyHttpHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.ComponentScan;
 
-@SpringBootApplication()
+
+@SpringBootApplication
 @ComponentScan(includeFilters = @ComponentScan.Filter(NettyHttpHandler.class))
 
-public class HttpServerApplication {
-
+public class HttpServerApplication implements CommandLineRunner {
+    
+    private static final Logger LOGGER = LoggerFactory.getLogger(HttpServerApplication.class);
+    
     public static void main(String[] args) {
+        //非web启动，其实springboot启动的时候会自己根据Classpath拥有的类进行判断
         new SpringApplicationBuilder(HttpServerApplication.class).web(WebApplicationType.NONE).run(args);
     }
-
+    
+    @Override
+    public void run ( String... strings ) throws Exception {
+    
+        LOGGER.info ("CommandLineRunner");
+        
+    }
+    /**
+     * ApplicationStartingEvent
+     ApplicationEnvironmentPreparedEvent
+     ApplicationPreparedEvent
+     
+     ApplicationStartedEvent <= 新增的事件
+     CommandLineRunner
+     ApplicationReadyEvent
+     ApplicationFailedEvent
+     
+     */
 }
