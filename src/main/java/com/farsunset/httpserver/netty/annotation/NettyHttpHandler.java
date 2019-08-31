@@ -21,6 +21,7 @@
  */
 package com.farsunset.httpserver.netty.annotation;
 
+
 import java.lang.annotation.*;
 
 @Target({ElementType.TYPE})
@@ -37,7 +38,7 @@ public @interface NettyHttpHandler {
      * 支持的提交方式
      * @return
      */
-    String method() default "GET";
+    RequestMethod method() default RequestMethod.GET;
 
     /**
      * path和请求路径是否需要完全匹配。 如果是PathVariable传参数，设置为false

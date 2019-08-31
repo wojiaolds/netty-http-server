@@ -22,6 +22,7 @@
 
 package com.farsunset.httpserver.netty.http;
 
+import com.farsunset.httpserver.netty.annotation.RequestMethod;
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.DecoderResult;
 import io.netty.handler.codec.http.FullHttpRequest;
@@ -43,7 +44,11 @@ public class NettyHttpRequest implements FullHttpRequest {
 	}
 	
 	public String contentText () {
-		
+		if(getMethod().name().equalsIgnoreCase(RequestMethod.GET.name())){
+			int index = uri ().indexOf('?');
+			String content = uri ().substring(index+1);
+			return content;
+		}
 		return content ().toString (CharsetUtil.UTF_8);
 	}
 	
@@ -66,13 +71,13 @@ public class NettyHttpRequest implements FullHttpRequest {
 	}
 	
 	public boolean isAllowed ( String method ) {
-		
+
 		return getMethod ().name ().equalsIgnoreCase (method);
 	}
 	
 	public boolean matched ( String path, boolean equal ) {
-		
-		String uri = uri ().toLowerCase ();
+		int index = uri ().indexOf('?');
+		String uri = uri ().substring(0,index).toLowerCase ();
 		return equal ? Objects.equals (path, uri) : uri.startsWith (path);
 	}
 	

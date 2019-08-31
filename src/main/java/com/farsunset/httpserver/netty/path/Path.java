@@ -23,9 +23,10 @@ package com.farsunset.httpserver.netty.path;
 
 
 import com.farsunset.httpserver.netty.annotation.NettyHttpHandler;
+import com.farsunset.httpserver.netty.annotation.RequestMethod;
 
 public class Path {
-    private String method;
+    private RequestMethod method;
     private String uri;
     private boolean equal;
 
@@ -37,12 +38,13 @@ public class Path {
         uri = annotation.path();
         equal = annotation.equal();
     }
-    public String getMethod() {
-        return method;
+
+    public void setMethod(RequestMethod method) {
+        this.method = method;
     }
 
-    public void setMethod(String method) {
-        this.method = method;
+    public RequestMethod getMethod() {
+        return method;
     }
 
     public String getUri() {
@@ -63,17 +65,17 @@ public class Path {
 
     @Override
     public String toString(){
-        return  method.toUpperCase() + " " + uri.toUpperCase();
+        return  method.name().toUpperCase() + " " + uri.toUpperCase();
     }
     @Override
     public int hashCode(){
-        return  ("HTTP " + method.toUpperCase() + " " + uri.toUpperCase()).hashCode();
+        return  ("HTTP " + method.name().toUpperCase() + " " + uri.toUpperCase()).hashCode();
     }
     @Override
     public boolean equals(Object object){
         if (object instanceof  Path){
             Path path = (Path) object;
-            return method.equalsIgnoreCase(path.method) && uri.equalsIgnoreCase(path.uri);
+            return method == path.method && uri.equalsIgnoreCase(path.uri);
         }
         return false;
     }

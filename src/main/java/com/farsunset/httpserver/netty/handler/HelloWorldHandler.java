@@ -22,15 +22,27 @@
 package com.farsunset.httpserver.netty.handler;
 
 
+import com.farsunset.httpserver.bean.User;
 import com.farsunset.httpserver.dto.Response;
 import com.farsunset.httpserver.netty.annotation.NettyHttpHandler;
 import com.farsunset.httpserver.netty.http.NettyHttpRequest;
+import com.farsunset.httpserver.utils.Convert;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @NettyHttpHandler(path = "/hello")
 public class HelloWorldHandler implements IFunctionHandler<String> {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(HelloWorldHandler.class);
+
     @Override
     public Response<String> execute(NettyHttpRequest request) {
-         return Response.ok("Hello World");
+        try {
+            User user = Convert.reqToObject(request, User.class);
+            return Response.ok("Hello World");
+        }catch (Exception e){
+            LOGGER.error(e.getMessage());
+            return Response.fail(e.getMessage());
+        }
     }
 }

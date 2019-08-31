@@ -22,10 +22,12 @@
 package com.farsunset.httpserver.netty.handler;
 import com.farsunset.httpserver.dto.Response;
 import com.farsunset.httpserver.netty.annotation.NettyHttpHandler;
+import com.farsunset.httpserver.netty.annotation.RequestMethod;
 import com.farsunset.httpserver.netty.http.NettyHttpRequest;
 
 
-@NettyHttpHandler(path = "/request/body",method = "POST")
+
+@NettyHttpHandler(path = "/request/body",method = RequestMethod.POST)
 public class RequestBodyHandler implements IFunctionHandler<String> {
     @Override
     public Response<String> execute(NettyHttpRequest request) {

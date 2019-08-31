@@ -77,7 +77,9 @@ public class HttpServerHandler extends SimpleChannelInboundHandler<FullHttpReque
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest request) {
+        LOGGER.info(Thread.currentThread().getName()+" 进入channelRead0");
         FullHttpRequest copyRequest = request.copy();
+
         executor.execute(() -> onReceivedRequest(ctx,new NettyHttpRequest(copyRequest)));
     }
 
@@ -114,7 +116,9 @@ public class HttpServerHandler extends SimpleChannelInboundHandler<FullHttpReque
         Map<String, Object> handlers =  applicationContext.getBeansWithAnnotation(NettyHttpHandler.class);
         for (Map.Entry<String, Object> entry : handlers.entrySet()) {
             Object handler = entry.getValue();
+            //根据NettyHttpHandler注解构建Path对象
             Path path = Path.make(handler.getClass().getAnnotation(NettyHttpHandler.class));
+            //Path类重写了hashcode和equals
             if (functionHandlerMap.containsKey(path)){
                 LOGGER.error("IFunctionHandler has duplicated :" + path.toString(),new IllegalPathDuplicatedException());
                 System.exit(0);
@@ -127,8 +131,10 @@ public class HttpServerHandler extends SimpleChannelInboundHandler<FullHttpReque
 
         AtomicBoolean matched = new AtomicBoolean(false);
 
+        //过滤出所有符合要求的Path
         Stream<Path> stream = functionHandlerMap.keySet().stream()
-                .filter(((Predicate<Path>) path -> {
+                .filter(
+                        ((Predicate<Path>) path -> {
                     /**
                      *过滤 Path URI 不匹配的
                      */
@@ -142,8 +148,10 @@ public class HttpServerHandler extends SimpleChannelInboundHandler<FullHttpReque
                     /**
                      * 过滤 Method 匹配的
                      */
-                    return request.isAllowed(path.getMethod());
-                }));
+                    return request.isAllowed(path.getMethod().name());
+                })
+                );
+
 
         Optional<Path> optional = stream.findFirst();
 
